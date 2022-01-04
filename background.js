@@ -37,23 +37,7 @@ async function handleMessage(request) {
             // https://github.com/whatwg/fetch/issues/763 thx XS-Leaks 
             var tab = await browser.tabs.create({url: url_base + url.pathname + url.search})             
             current_lab_tab_id = tab.id
-
-            current_hint_html = null
-            // we kinda assume the page has loaded by now
-            if(!current_hint_html){
-                let [html] = await browser.tabs.executeScript(current_lab_tab_id, {code: `
-                response = ''
-                document.getElementById('academyLabHeader').childNodes.forEach((child) =>{
-                    if(child.data.indexOf('HARD-MODE') != -1){
-                        console.log(child.textContent.substring(' HARD-MODE: '.length))
-                        response = child.textContent.substring(' HARD-MODE: '.length)
-                    };
-                }); response;
-                `})//.then((response) => {
-                current_hint_html = html.trim()
-                console.log("Got HTML:", current_hint_html)
-            }
-
+            
             break;
         case 'hint':
             console.log("Current category:", current_lab_category)
@@ -64,7 +48,7 @@ async function handleMessage(request) {
                 // await browser.tabs.sendMessage(current_lab_tab_id, {type: 'inject_header', html: current_hint_html})
                 browser.tabs.executeScript(current_lab_tab_id, {code: `
                 let here = document.getElementById('academyLabHeader')
-                here.innerHTML = atob("${current_hint_html}")    
+                here.innerHTML = atob(document.getElementById('academyLabHeader').childNodes[1].data.substr(12).trim())    
                 `})
                 
                 resp = {'hint': true}
@@ -77,3 +61,5 @@ async function handleMessage(request) {
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
+
+

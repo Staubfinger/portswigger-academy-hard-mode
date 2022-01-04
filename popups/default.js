@@ -20,14 +20,14 @@ function getFirstLink(div){
 
 // doing the DOM-Parsing here, just for being cautious and i guess XSS in popup.js is less worse than in background.js?
 
-function startLab(data){
+async function startLab(data){
     html = data.html
     var mydocument = new DOMParser().parseFromString(html, 'text/html')
     div = mydocument.getElementsByClassName(div_lab_class)[0]
     url = div.firstElementChild.href
-    let meh = browser.runtime.sendMessage({type: 'openLab', url: url}) // does the actual new open tab
-    meh.then(() => {browser.browserAction.setPopup({popup: 'lab.html'}); window.close()})
-    // TODO FIX for the above: Promise rejected after context unloaded: Actor 'Conduits' destroyed before query 'RuntimeMessage' was resolved
+    await browser.runtime.sendMessage({type: 'openLab', url: url}) // does the actual new open tab
+    browser.browserAction.setPopup({popup: browser.runtime.getURL('popups/lab.html')})
+    window.close()
 }
 
 function handleLabs(data){
@@ -56,8 +56,8 @@ async function handleError(err){
 }
 
 function move(){
-    browser.browserAction.setPopup({popup: 'lab.html'})
-    window.close() 
+    browser.browserAction.setPopup({popup: browser.runtime.getURL('popups/lab.html')})
+    window.close() // comment this out for better debugging 
 }
 
 function listenForClicks() {

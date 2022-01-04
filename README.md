@@ -28,8 +28,6 @@ At some point while solving a lab you will get an idea of what this lab is about
 
 
 # Known BUGS:
--  CSS for displaying lab header hint HTML is off, embedded SVGs break everything? 
-   - Tried re-loading CSS but doesnt quite work. some tweaking needed for better eye candy
 -  Burp Extension tries to modify the HTML body of all messages, which 'breaks' results without the portswigger lab hint header - i.e HTTP 503 HTML bodies are messed up
 
 # Improvments:

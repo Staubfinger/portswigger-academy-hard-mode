@@ -33,7 +33,7 @@ function listenForClicks() {
      }
   
       function reset() {
-        browser.browserAction.setPopup({popup: 'popup.html'})
+        browser.browserAction.setPopup({popup: browser.runtime.getURL('popups/popup.html')})
         window.close()
       }
  
