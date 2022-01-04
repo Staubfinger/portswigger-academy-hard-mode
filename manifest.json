@@ -1,0 +1,28 @@
+{
+
+  "manifest_version": 2,
+  "name": "Portswigger Academy Hard-Mode",
+  "version": "1.0",
+
+  "description": "Attempts to make the Portswigger Academy Labs more challenging by selecting a random one and removing spoiler. Has to be used in conjunction with the Burp Extension.",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/border-48.png",
+    "default_title": "Portswigger Academy Hard-Mode",
+    "default_popup": "popups/popup.html"
+  },
+
+
+  "permissions": [
+    "https://portswigger.net/web-security/*", "https://*.web-security-academy.net/*"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  }
+
+}

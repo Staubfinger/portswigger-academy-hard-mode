@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css"/>
+  </head>
+
+<body>
+  <div id="popup-content">
+    <div class="button hint">Give Hint</div>
+    <label for="cat">Category:</label>
+    <select name="Category" id="cat">
+        <option value="default"> -- HINT -- </option>
+        <option value="sql-injection">Sql Injection</option><option value="cross-site-scripting">Cross Site Scripting</option><option value="csrf">Csrf</option><option value="clickjacking">Clickjacking</option><option value="cors">Cors</option><option value="xxe">Xxe</option><option value="dom-based">Dom Based</option><option value="ssrf">Ssrf</option><option value="request-smuggling">Request Smuggling</option><option value="os-command-injection">Os Command Injection</option><option value="server-side-template-injection">Server Side Template Injection</option><option value="file-path-traversal">File Path Traversal</option><option value="access-control">Access Control</option><option value="authentication">Authentication</option><option value="websockets">Websockets</option><option value="web-cache-poisoning">Web Cache Poisoning</option><option value="deserialization">Deserialization</option><option value="information-disclosure">Information Disclosure</option><option value="logic-flaws">Logic Flaws</option><option value="host-header">Host Header</option><option value="oauth">Oauth</option><option value="file-upload">File Upload</option>
+    </select>
+    <div class="button reset">Reset current Lab</div>
+  </div>
+  <script src="lab.js"></script>
+</body>
+
+</html>
