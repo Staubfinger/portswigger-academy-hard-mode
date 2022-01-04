@@ -35,3 +35,4 @@ At some point while solving a lab you will get an idea of what this lab is about
 -  Currently, when a lab timeouts there is no way to re-open the same lab. Could save the URL and add functionality to re-open the last lab.
    - a workarround for this is to guess the category and use the included back-link to get back to portswigger and open the lab manually
 -  Icon is still default from the [FF examples](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) - could change to something more portswigger themed
+- use buildHttpMessage in burp ext to make things more beautiful
