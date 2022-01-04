@@ -63,13 +63,8 @@ async function handleMessage(request) {
                 console.log("Sending tab message")
                 // await browser.tabs.sendMessage(current_lab_tab_id, {type: 'inject_header', html: current_hint_html})
                 browser.tabs.executeScript(current_lab_tab_id, {code: `
-                sec = document.createElement("section")
-                sec.innerHTML = atob("${current_hint_html}")
-                here = document.getElementById('academyLabHeader')
-                here.parentNode.insertBefore(sec, here.nextSibling)
-                
-                // try to re-run CSS
-                links = document.getElementsByTagName("link"); for (var i = 0; i < links.length;i++) { var link = links[i]; if (link.rel === "stylesheet") {link.href += "?"; }}
+                let here = document.getElementById('academyLabHeader')
+                here.innerHTML = atob("${current_hint_html}")    
                 `})
                 
                 resp = {'hint': true}
