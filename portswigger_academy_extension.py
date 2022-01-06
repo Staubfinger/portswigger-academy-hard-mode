@@ -3,6 +3,7 @@ try:
 except ImportError as e :
     print("Failed to load dependencies. This issue may be caused by using the unstable Jython 2.7 beta.", e)
 
+BURP_ACADEMY_DIV = '<div id="academyLabHeader">'
 BURP_ACADEMY_HOST = ".web-security-academy.net"
 CONTENT_LENGTH = "Content-Length"
 CRLF = "\r\n"
@@ -43,7 +44,7 @@ class BurpExtender(IBurpExtender, IHttpListener):
         end = self.helpers.indexOf(content, self.helpers.stringToBytes(END), False, 0, len(content))
 
         encode = "<!-- HARD-MODE: {} -->"
-        # to put this in an html comment is kinda shitty, could use a div w/display:none which is more easily accessible via javascript 
+        # to put this in an html comment is kinda shitty, could use a div w/display:none, id=bla which is more easily accessible via javascript 
 
         # sadly we use python 2.x here so no new fancy python3.10 `match mode` code.
         if(mode == 'remove'):
@@ -54,26 +55,20 @@ class BurpExtender(IBurpExtender, IHttpListener):
     # Take the Header and base64 encode it, so that the extension can decode it and display it if necessary - i.e for hints needed to solve the chall
     # base64 has a flaw, since if one observes the string one could potentially learn the patterns by heart for the different categories and spoil oneself again, but good enough for now.
     def transformAcademyHTML(self, responseBytes):
-        # i guess some more checking is needed for html responses that do not contain the lab header    
-        newResponse = self.transformfirstHTMLTag('section', 'encode', responseBytes)
-        newResponse = self.transformfirstHTMLTag('title', 'remove', newResponse)
-        
-        # fixing content length :@ - kinda weird no native functions are available for this. needs _really_ ugly hacking. 
-        # note: the functions which automatically update the CL do not work here, seemingly, as we're editing raw HTML and not body post variables 
-        
-        # calc new content-len
-        body_offset = self.helpers.analyzeResponse(responseBytes).getBodyOffset() 
-        new_CL = len(newResponse) - body_offset
-        
-        # get the index of the old content length header
-        idx = self.helpers.indexOf(newResponse, self.helpers.stringToBytes(CONTENT_LENGTH), False , 0, len(newResponse))
-        
-        # get the end idx of the old header
-        # pretty much the definiton of shit - pls giev self.helpers.updateCL(newcl=1337)  // the 15 is kinda arbitrary but should be fine
-        end_idx = self.helpers.indexOf(newResponse, CRLF, False , idx, idx + len(CONTENT_LENGTH) + 15)      
+        # first of all make sure we potentially have hints in the response
+        if (self.helpers.bytesToString(responseBytes).find(BURP_ACADEMY_DIV) == -1) :
+            return responseBytes
 
-        # forge new response with old header left out and replaced with new header with new CL
-        newResponse = newResponse[:idx] + str(CONTENT_LENGTH) + str(": ") + str(new_CL) + CRLF + newResponse[end_idx + 2:]
+        bodyOffset = self.helpers.analyzeResponse(responseBytes).getBodyOffset() 
+        oldHeaders = self.helpers.analyzeResponse(responseBytes).getHeaders()
+        oldResponseBody = responseBytes[bodyOffset:]
+
+        newResponseBody = self.transformfirstHTMLTag('section', 'encode', oldResponseBody)
+        newResponseBody = self.transformfirstHTMLTag('title', 'remove', newResponseBody)
+        
+        
+        # this should also take care of the CL. Unclear what happens with HTTP/2 requests.  
+        newResponse = self.helpers.buildHttpMessage(oldHeaders, newResponseBody)
 
         return newResponse
     
