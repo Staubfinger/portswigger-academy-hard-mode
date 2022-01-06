@@ -26,13 +26,8 @@ At some point while solving a lab you will get an idea of what this lab is about
    - Workarround: Do not peek at the URL while opening a new lab
    - a fix might be a reverse proxy "service" to hide the URL 
 
-
-# Known BUGS:
--  Burp Extension tries to modify the HTML body of all messages, which 'breaks' results without the portswigger lab hint header - i.e HTTP 503 HTML bodies are messed up
-
 # Improvments:
 -  HTML/CSS for the popup is ugly, improve yourself if you care
 -  Currently, when a lab timeouts there is no way to re-open the same lab. Could save the URL and add functionality to re-open the last lab.
    - a workarround for this is to guess the category and use the included back-link to get back to portswigger and open the lab manually
 -  Icon is still default from the [FF examples](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) - could change to something more portswigger themed
-- use buildHttpMessage in burp ext to make things more beautiful
