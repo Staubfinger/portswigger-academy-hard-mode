@@ -31,3 +31,8 @@ At some point while solving a lab you will get an idea of what this lab is about
 -  Currently, when a lab timeouts there is no way to re-open the same lab. Could save the URL and add functionality to re-open the last lab.
    - a workarround for this is to guess the category and use the included back-link to get back to portswigger and open the lab manually
 -  Icon is still default from the [FF examples](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) - could change to something more portswigger themed
+
+# Known BUGS:
+- Some labs, for instance the insecure file upload ones, require the solution to be submitted via a form in the lab header. This form is implemented in javascript via an <script> which does not get executed upon inserting the HTML in background.js into the page, since the DOM is already loaded. 
+   - Is a possible workaround to detect scripts and fetch/eval the code? Sounds horrible.  
+   - temp workarround is to get the js yourself and paste it into the console 🌞
